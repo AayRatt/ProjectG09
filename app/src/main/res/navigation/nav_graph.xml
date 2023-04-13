@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mapFragment">
+    app:startDestination="@id/MapFragment">
 
     <fragment
-        android:id="@+id/mapFragment"
+        android:id="@+id/MapFragment"
         android:name="com.example.project_g09.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" />
     <fragment
-        android:id="@+id/itineraryFragment"
+        android:id="@+id/ItineraryFragment"
         android:name="com.example.project_g09.ItineraryFragment"
         android:label="fragment_itinerary"
         tools:layout="@layout/fragment_itinerary" />

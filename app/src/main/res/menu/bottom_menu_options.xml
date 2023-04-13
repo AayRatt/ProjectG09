@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/fragment_map"
+        android:id="@+id/MapFragment"
         android:title="Screen A"></item>
     <item
-        android:id="@+id/fragment_itinerary"
+        android:id="@+id/ItineraryFragment"
         android:title="Screen B"></item>
+
 
 </menu>
