@@ -1,7 +1,10 @@
 package com.example.project_g09.models
+
+import java.io.Serializable
+
 data class AllStatesResponse(
     val data:List<State>
-){}
+): Serializable {}
 
 data class State(
 
@@ -14,7 +17,7 @@ data class State(
     val addresses:List<Addresses>,
     val images:List<Img>
 
-){}
+):Serializable{}
 
 data class Addresses(
     val postalCode:String,

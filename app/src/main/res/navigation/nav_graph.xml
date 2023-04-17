@@ -23,5 +23,9 @@
         android:id="@+id/viewParkDetails"
         android:name="com.example.project_g09.ViewParkDetails"
         android:label="fragment_view_park_details"
-        tools:layout="@layout/fragment_view_park_details" />
+        tools:layout="@layout/fragment_view_park_details" >
+        <argument
+            android:name="Park"
+            app:argType="com.example.project_g09.models.State" />
+    </fragment>
 </navigation>

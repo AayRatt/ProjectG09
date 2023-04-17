@@ -5,15 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.constraintlayout.helper.widget.MotionEffect.TAG
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.project_g09.databinding.FragmentMapBinding
-import com.example.project_g09.databinding.FragmentMapsGoogleBinding
 import com.example.project_g09.models.AllStatesResponse
 import com.example.project_g09.models.State
 import com.example.project_g09.networking.ApiService
@@ -23,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
-import retrofit2.Response
+
 
 class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
@@ -40,6 +37,7 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
     val statesFromDataStorage = DataStorage.getInstance().stateList
     var markerList:MutableList<LatLng> = mutableListOf()
+    private lateinit var dataFromAPI: AllStatesResponse
 
     //Binding logic to use with fragments
     override fun onCreateView(
@@ -87,7 +85,7 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
     private suspend fun getAllStatesFromAPI(statesToSearch:String): AllStatesResponse? {
         var apiService: ApiService = RetrofitInstance.retrofitService
-        val response: Response<AllStatesResponse> = apiService.getStates(statesToSearch.trim(),"FnvA2Hh1uDqFiQqvmAJRPInDrW6a1E94IpBaiOtT")
+        val response: retrofit2.Response<AllStatesResponse> = apiService.getStates(statesToSearch.trim(),"FnvA2Hh1uDqFiQqvmAJRPInDrW6a1E94IpBaiOtT")
 
         if (response.isSuccessful) {
             val dataFromAPI = response.body()   /// myresponseobject
@@ -107,7 +105,6 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
             return null
         }
     }
-
     override fun onMapReady(googleMap: GoogleMap) {
         Log.d(TAG, "+++ Map callback is executing...")
         // initialize the map
@@ -137,13 +134,9 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
                 var stateToSearch = statesFromDataStorage[position].stateShort
 
-            val markerListener = GoogleMap.OnInfoWindowClickListener {
-
-                //Sends the customProduct to other screen.
-                val action = MapFragmentDirections.actionMapFragmentToViewParkDetails()
+            fun moveToNextFragment(stateInfoToSend:State) {
+                val action = MapFragmentDirections.actionMapFragmentToViewParkDetails(stateInfoToSend)
                 findNavController().navigate(action)
-
-                true
             }
 
                 //Launching API query
@@ -154,12 +147,14 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
                         return@launch
                     }
                     Log.d(TAG, "Success: Data retrieved from API")
+                    Log.d(TAG, responseFromAPI.toString())
 
 
                     var stateParkDataList:List<State> = responseFromAPI.data
 
                     var parkLocation:LatLng
                     val builder = LatLngBounds.Builder()
+                    var stateInfo:State
 
                     for(states in stateParkDataList){
 
@@ -174,6 +169,7 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
                         var addressForMap = "${states.addresses[0].line1}, ${states.addresses[0].city} , ${states.addresses[0].stateCode}, ${states.addresses[0].postalCode}"
 
+                        stateInfo = State(states.url,states.fullName,states.description,states.latitude,states.longitude,states.addresses,states.images)
 
                         myMap.addMarker(
                             MarkerOptions()
@@ -183,7 +179,10 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
                         )
 
-                        myMap.setOnInfoWindowClickListener(markerListener)
+//                        myMap.setOnInfoWindowClickListener(markerListener)
+                        myMap.setOnInfoWindowClickListener {
+                            moveToNextFragment(stateInfo)
+                        }
 
                     }
 
