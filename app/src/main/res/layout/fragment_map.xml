@@ -12,8 +12,25 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="28sp"
-        android:text="Screen A MAP (Fragment)" />
+        android:text="Find a Park" />
 
+    <Spinner
+        android:id="@+id/listOfStatesSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/findParks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Find Parks" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/map_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        />
 
 
 </LinearLayout>
