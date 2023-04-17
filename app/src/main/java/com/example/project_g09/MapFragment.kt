@@ -137,6 +137,15 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
                 var stateToSearch = statesFromDataStorage[position].stateShort
 
+            val markerListener = GoogleMap.OnInfoWindowClickListener {
+
+                //Sends the customProduct to other screen.
+                val action = MapFragmentDirections.actionMapFragmentToViewParkDetails()
+                findNavController().navigate(action)
+
+                true
+            }
+
                 //Launching API query
 
                 lifecycleScope.launch {
@@ -170,12 +179,14 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
                             MarkerOptions()
                                 .position(parkLocation)
                                 .title("${states.fullName}")
-                                .snippet("${addressForMap}")
-                                
+                                .snippet("${addressForMap}\n Click Here For Details")
+
                         )
 
+                        myMap.setOnInfoWindowClickListener(markerListener)
 
                     }
+
 
                     val bounds = builder.build()
                     val padding = 200
@@ -188,5 +199,7 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
         }
 
-    }
+}
+
+
 
