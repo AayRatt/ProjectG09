@@ -21,7 +21,6 @@ class ParkItinerary : Fragment(R.layout.fragment_park_itinerary) {
 
     private val args:ParkItineraryArgs by navArgs()
 
-    val preferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
 
 
     override fun onCreateView(
@@ -40,6 +39,7 @@ class ParkItinerary : Fragment(R.layout.fragment_park_itinerary) {
     }
 
     private fun doStuff() {
+        val preferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
         val name = args.fullName
         val address = args.address
         binding.tvFullName.text = name
@@ -65,7 +65,7 @@ class ParkItinerary : Fragment(R.layout.fragment_park_itinerary) {
                 for (document in documents) {
                     val parkDocRef = db.collection("parks").document(document.id)
                     val date = binding.etDate.text.toString()
-                    parkDocRef.update("date", date)
+                    parkDocRef.update("currentDate", date)
                         .addOnSuccessListener {
                             // Date field updated successfully
                         }

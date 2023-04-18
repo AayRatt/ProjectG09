@@ -65,9 +65,13 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
             }
     }
 
+    override fun onResume() {
+        super.onResume()
+        (binding.listview.adapter as? SimpleAdapter)?.notifyDataSetChanged()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 }
-
