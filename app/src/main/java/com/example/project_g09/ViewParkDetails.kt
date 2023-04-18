@@ -1,5 +1,6 @@
 package com.example.project_g09
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,11 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.project_g09.databinding.FragmentViewParkDetailsBinding
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.locks.LockSupport.park
 
 class ViewParkDetails : Fragment(R.layout.fragment_view_park_details) {
@@ -33,34 +37,31 @@ class ViewParkDetails : Fragment(R.layout.fragment_view_park_details) {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         loadData()
 
         binding.btnAdd.setOnClickListener {
             addToFirebase()
-            Toast.makeText(requireContext(), "Added to Itinerary", Toast.LENGTH_SHORT).show()
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun addToFirebase() {
         val park = args.Park
         val parkData = hashMapOf(
             "fullName" to park.fullName,
             "address" to "${park.addresses[0].line1}, ${park.addresses[0].city} , ${park.addresses[0].stateCode}, ${park.addresses[0].postalCode}",
-            "description" to park.description,
-            "url" to park.url,
-            "imageUrl" to park.images[0].url
+            "currentDate" to LocalDate.now().format(DateTimeFormatter.ISO_DATE)
         )
 
         db.collection("parks")
             .add(parkData)
             .addOnSuccessListener { documentReference ->
-                Log.d("FBASE", "DocumentSnapshot added with ID: ${documentReference.id}")
-                Toast.makeText(requireContext(), "Park added to Firebase", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Park added to Itinerary", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { e ->
-                Log.w("FBASE", "Error adding document", e)
                 Toast.makeText(requireContext(), "Failed to add park to Firebase", Toast.LENGTH_SHORT).show()
             }
     }

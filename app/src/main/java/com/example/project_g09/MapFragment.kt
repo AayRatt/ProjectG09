@@ -179,9 +179,12 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
 
                         )
 
-//                        myMap.setOnInfoWindowClickListener(markerListener)
-                        myMap.setOnInfoWindowClickListener {
-                            moveToNextFragment(stateInfo)
+                        myMap.setOnInfoWindowClickListener { marker ->
+                            // Find the State object associated with the clicked marker
+                            val stateInfo = stateParkDataList.find { it.latitude == marker.position.latitude.toString() && it.longitude == marker.position.longitude.toString() }
+                            stateInfo?.let {
+                                moveToNextFragment(it)
+                            }
                         }
 
                     }
