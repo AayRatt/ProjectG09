@@ -114,15 +114,14 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
         // - set the map type (hybrid, satellite, etc)
         myMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         // - select if traffic data should be displayed
-        myMap.isTrafficEnabled = true
+        myMap.isTrafficEnabled = false
         // - add user interface controls to the map (zoom, compass, etc)
         val uiSettings = googleMap.uiSettings
         uiSettings.isZoomControlsEnabled = true
         uiSettings.isCompassEnabled = true
 
-        val intialLocation = LatLng(43.6426, -79.3871)
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(intialLocation, 2.0f))
-        myMap.addMarker(MarkerOptions().position(intialLocation).title("Welcome to Toronto"))
+        val intialLocation = LatLng(37.0902, -98.7129)
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(intialLocation, 3.4f))
 
         //Spinner listener when one category is selected.
         binding.findParks.setOnClickListener{
