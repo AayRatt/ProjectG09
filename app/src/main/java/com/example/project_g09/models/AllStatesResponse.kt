@@ -26,7 +26,7 @@ data class Addresses(
     val line1:String,
     val type:String,
 
-){}
+):Serializable{}
 
 data class Img(
     val credit:String,
@@ -34,4 +34,4 @@ data class Img(
     val altText:String,
     val caption:String,
     val url:String
-){}
+):Serializable{}

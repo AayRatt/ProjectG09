@@ -1,6 +1,6 @@
 package com.example.project_g09
 
-import java.lang.Thread.State
+import com.example.project_g09.models.StateModel
 
 class DataStorage {
 
