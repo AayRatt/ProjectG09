@@ -118,6 +118,10 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
     //onMapReady function to set Map settings and markers.
     override fun onMapReady(googleMap: GoogleMap) {
         Log.d(TAG, "+++ Map callback is executing...")
+
+        //Set custom adapter for marker's info window
+        val adapter = CustomInfoWindowAdapter(requireContext())
+        googleMap.setInfoWindowAdapter(adapter)
         // Map initialization
         this.myMap = googleMap
 
@@ -183,15 +187,15 @@ class MapFragment : Fragment(R.layout.fragment_map),OnMapReadyCallback {
                         //mark location included in builder.
                         builder.include(parkLocation)
                         //Set address format to be shown in marker
-                        var addressForMap = "${states.addresses[0].line1}, ${states.addresses[0].city} , ${states.addresses[0].stateCode}, ${states.addresses[0].postalCode}"
-
+                        var addressForMap = "${states.addresses[0].line1}"
+                        var addressForMap2 = "${states.addresses[0].city} , ${states.addresses[0].stateCode}, ${states.addresses[0].postalCode}"
                         //stateInfo = State(states.url,states.fullName,states.description,states.latitude,states.longitude,states.addresses,states.images)
                         //Set marker with the name of the park and the address.
                         myMap.addMarker(
                             MarkerOptions()
                                 .position(parkLocation)
                                 .title("${states.fullName}")
-                                .snippet("${addressForMap}\n Click Here For Details")
+                                .snippet("${addressForMap}\n${addressForMap2}")
 
                         )
                         //Set marker listener
