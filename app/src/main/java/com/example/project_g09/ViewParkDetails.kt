@@ -48,6 +48,7 @@ class ViewParkDetails : Fragment(R.layout.fragment_view_park_details) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    //Function to add Park Information to Firebase
     private fun addToFirebase() {
         val park = args.Park
         val parkData = hashMapOf(
@@ -55,7 +56,7 @@ class ViewParkDetails : Fragment(R.layout.fragment_view_park_details) {
             "address" to "${park.addresses[0].line1}, ${park.addresses[0].city} , ${park.addresses[0].stateCode}, ${park.addresses[0].postalCode}",
             "currentDate" to LocalDate.now().format(DateTimeFormatter.ISO_DATE)
         )
-
+        //Adding Data
         db.collection("parks")
             .add(parkData)
             .addOnSuccessListener { documentReference ->
@@ -72,6 +73,7 @@ class ViewParkDetails : Fragment(R.layout.fragment_view_park_details) {
         loadData()
     }
 
+    //Function to load Park data to views
     private fun loadData() {
         val park = args.Park
         var addressForMap = "${park.addresses[0].line1}, ${park.addresses[0].city} , ${park.addresses[0].stateCode}, ${park.addresses[0].postalCode}"

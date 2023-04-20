@@ -21,6 +21,7 @@ class ParkItinerary : Fragment(R.layout.fragment_park_itinerary) {
 
     val db = Firebase.firestore
 
+    // Get the arguments passed to this fragment
     private val args:ParkItineraryArgs by navArgs()
 
 
@@ -36,19 +37,24 @@ class ParkItinerary : Fragment(R.layout.fragment_park_itinerary) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Call the doStuff function to populate the view and add click listeners
         doStuff()
 
     }
 
     private fun doStuff() {
+        // Get the shared preferences for this fragment using the park name as the key
         val preferences = requireActivity().getSharedPreferences(args.fullName, Context.MODE_PRIVATE)
+        // Get the park name and address from the arguments and display them in the view
         val name = args.fullName
         val address = args.address
+        // Get the saved date and notes from shared preferences and display them in the view
         binding.tvFullName.text = name
         binding.tvAddress.text = address
         binding.etDate.setText(preferences.getString("${args.fullName}_date", ""))
         binding.etNotes.setText(preferences.getString("${args.fullName}_notes", ""))
 
+        // Save the itinerary to shared preferences and the database when the save button is clicked
         binding.btnSave.setOnClickListener {
             val date = binding.etDate.text.toString()
             val notes = binding.etNotes.text.toString()
@@ -76,6 +82,7 @@ class ParkItinerary : Fragment(R.layout.fragment_park_itinerary) {
                     }
             }
         }
+        // Remove the itinerary from shared preferences and the database when the remove button is clicked
         binding.btnRemove.setOnClickListener {
             db.collection("parks")
                 .whereEqualTo("fullName", args.fullName)

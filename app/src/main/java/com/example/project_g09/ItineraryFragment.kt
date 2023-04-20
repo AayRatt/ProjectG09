@@ -17,6 +17,7 @@ import com.google.firebase.ktx.Firebase
 
 class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
 
+    // Define the binding object and the Firestore database instance
     private var _binding: FragmentItineraryBinding? = null
     private val binding get() = _binding!!
 
@@ -33,6 +34,7 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Create an empty list of HashMaps to store park data and a SimpleAdapter to populate the listview
         val parksList = mutableListOf<HashMap<String, String>>()
         val adapter = SimpleAdapter(
             requireContext(),
@@ -43,6 +45,7 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
         )
         binding.listview.adapter = adapter
 
+        // Set up the list item click event to navigate to the ParkItinerary fragment
         binding.listview.setOnItemClickListener { parent, view, position, id ->
             // Handle the click event here
             val item = parksList[position]
@@ -52,6 +55,7 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
             findNavController().navigate(action)
         }
 
+        // Retrieve park data from the Firestore database and add it to the parksList
         db.collection("parks")
             .get()
             .addOnSuccessListener { result ->
@@ -65,11 +69,13 @@ class ItineraryFragment : Fragment(R.layout.fragment_itinerary) {
             }
     }
 
+    // Refresh the listview on resume
     override fun onResume() {
         super.onResume()
         (binding.listview.adapter as? SimpleAdapter)?.notifyDataSetChanged()
     }
 
+    // Clean up the binding object on destroy view
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
